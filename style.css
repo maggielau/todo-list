@@ -1,0 +1,60 @@
+/* Pink: #FF6DA3
+Mid Grey: #22232A 
+Light Grey: #1E1B26
+Dark Grey: 0f0d14*/
+
+
+* {
+    box-sizing: border-box;
+    color: #FFF;
+    font-family: 'Mulish', sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    background-color: #0f0d14;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    padding: 15px;
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    font-family: 'Lily Script One', cursive;
+    font-size: 38px;
+    color: #FF6DA3;
+}
+
+.footer {
+    background-color: #0f0d14;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer img {
+    margin-right: 5px;
+}
+
+.main {
+    background-image: linear-gradient(#272231, #1E1B26);
+    display: grid;
+    grid-template-columns: 300px auto;
+    height: calc(100vh - 140px);
+}
+
+.sidebar {
+    background-image: linear-gradient(to right, #1E1B26, #16131d);
+}
+
+.content {
+
+}
