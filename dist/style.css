@@ -14,6 +14,7 @@ html,
 body {
     margin: 0;
     padding: 0;
+    overflow-y: hidden;
 }
 
 .header {
@@ -47,7 +48,7 @@ h1 {
 .main {
     background-image: linear-gradient(#272231, #1E1B26);
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 250px auto;
     height: calc(100vh - 140px);
 }
 
@@ -56,5 +57,292 @@ h1 {
 }
 
 .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 55px 0px;
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+}
 
+.content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.content::-webkit-scrollbar-track {
+    background-color: #0f0d14;
+    border-radius: 100px;
+}
+
+.content::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    border: 6px solid rgba(0, 0, 0, 0.18);
+    border-left: 0;
+    border-right: 0;
+    background-color: #FF6DA3;
+}
+  
+
+.todo {
+    background-color: #464750;
+    width: calc((100vw - 300px)*.9);
+    margin: 5px;
+    padding: 5px 15px;
+    border-radius: 7px;
+    font-size: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.todo:hover {
+    background-color: #53545e;
+
+}
+
+.todoInfo {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+}
+
+.todoInfo img {
+    margin-right: 10px;
+}
+
+.todoTitle {
+    display: flex;
+    align-items: center;
+}
+
+.todoTitle#true {
+    text-decoration: line-through;
+    color: #8a8a8a;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.todoIcons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100px;
+}
+
+.modal {
+    visibility: hidden;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    background-color: rgba(0,0,0,0.7);
+    opacity: 0;
+    transition: all 0.20s ease-in;
+    overflow: auto;
+}
+
+.modal.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: linear-gradient( #FF6DA3, #FF6DA3 60px, #22232A 20px, #22232A 40px);
+    margin: 10% auto;
+    width: 800px;
+    height: 450px;
+    border-radius: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    font-size: 20px;
+    position: relative;
+}
+
+.form {
+    display: grid;
+    margin: 60px 15px;
+    grid-template-rows: auto 40px;
+}
+
+input,
+textarea {
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    margin-top: 15px;
+    font-size: 18px;
+    background-color: #0f0d14;
+    resize: none;
+}
+
+input[type=date] {
+    padding: 6.4px;
+}
+
+input[type=date]:invalid::-webkit-datetime-edit {
+    color: #757575;
+}
+
+::-webkit-calendar-picker-indicator {
+    filter: invert(100%) brightness(40%);
+}
+
+.radio {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0px;
+    background-color: #0f0d14;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 19px;
+    color: #757575;
+}
+
+.radio label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+    font-size: 19px;
+    color: #757575;
+    margin-top: 11px;
+}
+
+
+
+.overlay {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -10px;
+    left: -4px;
+    position: relative;
+    background-color: #757575;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid #a7a7a7;
+}
+
+input[type='radio']:checked + overlay {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -10px;
+    left: -4px;
+    position: relative;
+    background-color: #FF6DA3;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid #a7a7a7;
+}
+
+.row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.col {
+    margin-right: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#todoForm {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+}
+
+.modal-content h2 {
+    position: absolute;
+    left: 15px;
+    top: 0px;
+    color: #0f0d14;
+}
+
+.modal-content #modalButton {
+    background-color: #FF6DA3;
+    padding: 5px 10px;
+    font-size: 22px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.addButton {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+}
+
+@-webkit-keyframes swing {
+    15% {
+        -webkit-transform: translateY(5px);
+        transform: translateY(5px);
+    }
+    30% {
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
+    50% {
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+    }
+    65% {
+        -webkit-transform: translateY(-3px);
+        transform: translateY(-3px);
+    }
+    80% {
+        -webkit-transform: translateY(2px);
+        transform: translateY(2px);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+@keyframes swing {
+    15% {
+        -webkit-transform: translateY(5px);
+        transform: translateY(5px);
+    }
+    30% {
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
+    50% {
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+    }
+    65% {
+        -webkit-transform: translateY(-3px);
+        transform: translateY(-3px);
+    }
+    80% {
+        -webkit-transform: translateY(2px);
+        transform: translateY(2px);
+    }
+    100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+.addButton:hover, 
+.addButton:focus,
+#modalButton:hover,
+#modalButton:focus {
+    -webkit-animation: swing 1s ease;
+    animation: swing 1s ease;
+    -webkit-animation-iteration-count: 1;
+    animation-iteration-count: 1;
 }

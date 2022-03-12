@@ -27,6 +27,57 @@
     <div class="footer" id="footer">
         <a href="https://github.com/maggielau" target="_blank"><img src="./images/github-logo-small-white.svg" alt="github" width="25px"></a>Maggie Lau
     </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h2>What to do?</h2>
+            <div class="form">
+                <form id="todoForm">
+                    <div class="col">
+                        <input type="text" placeholder="Title: Get groceries">
+                        <textarea name="" rows="10" placeholder="Details: Pick up cereal, milk, eggs etc."></textarea>
+                    </div>
+                    <div class="col">
+                        <input type="date" id="" name=""
+                        value=""
+                        min="2020-01-01" max="2030-12-31" required>
+                        <input type="text" class="projectSelect" list="projects" placeholder="Project Name: Chores">
+                        <datalist id="projects">
+                            <option>Project 1</option>
+                            <option>Project 2</option>
+                            <option>Project 3</option>
+                        </datalist>
+                        <div class="radio">
+                            Priority:
+                            <label for="Low">
+                                <input type="radio" name="priority" class="Low" 
+                                id="Low" value="Low">
+                                <img src="./images/star-low.svg" alt="">
+                                Low
+                            </label>
+                            <label for="Medium">
+                                <input type="radio" name="priority" class="Medium" 
+                                id="Medium" value="Medium">
+                                <img src="./images/star-med.svg" alt="">
+                                Medium
+                            </label>
+                            <label for="High">
+                                <input type="radio" name="priority" class="High" 
+                                id="High" value="High">
+                                <img src="./images/star-high.svg" alt="">
+                                High
+                            </label>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <span id="formError"></span><button id="modalButton">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 <script src="main.js"></script>
