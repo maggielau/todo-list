@@ -7,6 +7,7 @@ import editImg from './images/edit.svg';
 import editHoverImg from './images/edit-hover.svg';
 import delImg from './images/del.svg';
 import delHoverImg from './images/del-hover.svg';
+import { format, compareAsc } from 'date-fns';
 
 
 
@@ -19,12 +20,16 @@ const allTodos = [];
 
 
 //object cosntructor for todo
-const todo = (title, desc, dueDate, priority, project="Home", checked=false) => {
+const todo = (title, desc, dueDate, priority, project="", checked=false) => {
     
     //each new todo is assigned a uniqueID for easier edit/removal
     let todoID = uniqueID++;
 
-    return {title, desc, dueDate, priority, project, checked, todoID};
+    let year = parseInt(dueDate.substring(0,4));
+    let month = parseInt(dueDate.substring(5,7))-1;
+    let day = parseInt(dueDate.substring(8));
+
+    return {title, desc, dueDate, year, month, day, priority, project, checked, todoID};
 };
 
 
@@ -32,12 +37,16 @@ const todo = (title, desc, dueDate, priority, project="Home", checked=false) => 
 const addTodo = (title, desc, dueDate, priority, project) => {
     const new_todo = todo(title, desc, dueDate, priority, project);
     allTodos.push(new_todo);
+
+    //sort the todos array by date in descending 
+    allTodos.sort(dynamicSort("dueDate"));
+
 };
 
 //create sample todos
 addTodo("Do homework", "Finish science report", "2022-03-31", "Low");
-addTodo("Workout", "10 push ups", "2022-04-10", "Low");
-addTodo("Walk dog", "pick up the poop", "2022-04-28", "High");
+addTodo("Workout", "10 push ups", "2022-01-10", "Low");
+addTodo("Walk dog", "pick up the poop", "2022-02-26", "High");
 
 //delete todos and remove from array based on the unique ID number passed
 const delTodo = (ID) => {
@@ -45,6 +54,34 @@ const delTodo = (ID) => {
     console.log(`Deleted index ${delIndex}`);
     allTodos.splice(delIndex, 1);
 }
+
+//function to sort objects by key value
+function dynamicSort(property) {
+    var sortOrder = 1;
+
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+
+    return function (a,b) {
+        if(sortOrder == -1){
+            return b[property].localeCompare(a[property]);
+        }else{
+            return a[property].localeCompare(b[property]);
+        }        
+    }
+}
+
+//function to find and return all unique values of project names
+const findProjects = () => {
+    const uniqueProjects = new Set()
+    for (const todo of allTodos) {
+        uniqueProjects.add(todo.project);
+    }
+    return uniqueProjects;
+}
+
 
 //finds the index location of the todo based on unique ID number passed
 const findTodoIndex = (ID) => {
@@ -175,12 +212,16 @@ const displayTodos = () => {
 
         title.append(todo.title);
 
-        //Display icons
+        //Display date and icons
         const icons = document.createElement('div')
         icons.setAttribute("class", "todoIcons");
+        icons.append(format(new Date(todo.year, todo.month, todo.day), 'MMM-dd'));
         icons.appendChild(displayPriority(todo));
         icons.appendChild(displayEdit(todo));
         icons.appendChild(displayDel(todo, todo.todoID));
+
+
+
 
 
         todoInfo.appendChild(title);
@@ -215,4 +256,4 @@ const displayTodos = () => {
 };
 
 
-export {displayTodos, addTodo, delTodo, allTodos};
+export {displayTodos, addTodo, delTodo, findProjects, allTodos};
