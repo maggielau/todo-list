@@ -54,6 +54,18 @@ h1 {
 
 .sidebar {
     background-image: linear-gradient(to right, #1E1B26, #16131d);
+    display: grid;
+    grid-template-rows: 100px auto 200px;
+    padding: 10px;
+    gap: 40px;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
+.projectLink#home {
+    align-self: end;
 }
 
 .content {
@@ -65,16 +77,19 @@ h1 {
     overflow-y: auto;
 }
 
-.content::-webkit-scrollbar {
+.content::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
     width: 10px;
 }
 
-.content::-webkit-scrollbar-track {
+.content::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
     background-color: #0f0d14;
     border-radius: 100px;
 }
 
-.content::-webkit-scrollbar-thumb {
+.content::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
     border-radius: 100px;
     border: 6px solid rgba(0, 0, 0, 0.18);
     border-left: 0;
@@ -127,9 +142,10 @@ h1 {
 
 .todoIcons {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    width: 100px;
+    width: 230px;
+    font-size: 16px;
 }
 
 .modal {
@@ -156,11 +172,11 @@ h1 {
     background: linear-gradient( #FF6DA3, #FF6DA3 60px, #22232A 20px, #22232A 40px);
     margin: 10% auto;
     width: 800px;
-    height: 450px;
+    height: 470px;
     border-radius: 20px;
     padding: 15px;
     box-sizing: border-box;
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 22px 70px 4px;
     font-size: 20px;
     position: relative;
 }
@@ -208,20 +224,18 @@ input[type=date]:invalid::-webkit-datetime-edit {
 .radio label {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    padding: 5px;
+    display: inline-block;
+    padding: 2px;
     font-size: 19px;
     color: #757575;
     margin-top: 11px;
 }
 
-
-
-.overlay {
+input[type='radio']:after {
     width: 15px;
     height: 15px;
     border-radius: 15px;
-    top: -10px;
+    top: -2px;
     left: -4px;
     position: relative;
     background-color: #757575;
@@ -231,11 +245,11 @@ input[type=date]:invalid::-webkit-datetime-edit {
     border: 2px solid #a7a7a7;
 }
 
-input[type='radio']:checked + overlay {
+input[type='radio']:checked:after {
     width: 15px;
     height: 15px;
     border-radius: 15px;
-    top: -10px;
+    top: -2px;
     left: -4px;
     position: relative;
     background-color: #FF6DA3;
@@ -243,6 +257,13 @@ input[type='radio']:checked + overlay {
     display: inline-block;
     visibility: visible;
     border: 2px solid #a7a7a7;
+}
+
+#formError {
+    font-size: 16px;
+    color: red;
+    margin-right: 15px;
+    margin-top: 8px;
 }
 
 .row {
@@ -345,4 +366,15 @@ input[type='radio']:checked + overlay {
     animation: swing 1s ease;
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1;
+}
+
+.projectLink {
+    padding-left: 40px;
+    margin-top: 10px;
+    width: 250px;
+    font-size: 26px;
+    font-weight: bolder;
+    color: #FF6DA3;
+    cursor: pointer;
+    overflow-wrap: break-word;
 }
