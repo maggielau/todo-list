@@ -1,5 +1,5 @@
 import addImg from './images/plus.svg';
-import {findProjects, addTodo, editTodo, displayTodos, allTodos} from './todos.js';
+import {findProjects, addTodo, editTodo, displayTodos, updateFilter, allTodos} from './todos.js';
 
 //Modal
 const modal = document.getElementById("addModal");
@@ -49,6 +49,7 @@ const displaySidebar = () => {
 
         projectLink.addEventListener('click', function () {
             displayTodos(project);
+            updateFilter(project);
         });
     }
     sidebar.appendChild(projectLinks);

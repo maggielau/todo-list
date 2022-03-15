@@ -17,7 +17,9 @@ const content = document.getElementById('content');
 //ID number for each new todo created
 let uniqueID = 0;
 //array to store all todos
-const allTodos = [];
+let allTodos = [];
+//track filter view
+let filter = "";
 
 
 //object cosntructor for todo
@@ -42,6 +44,8 @@ const addTodo = (title, desc, dueDate, priority, project) => {
     //sort the todos array by date in descending 
     allTodos.sort(dynamicSort("dueDate"));
 
+    //update local storage
+    localStorage.userTodos = JSON.stringify(allTodos);
 };
 
 //create new todos and add to array
@@ -53,21 +57,27 @@ const editTodo = (id, titleEdit, descEdit, dueDateEdit, priorityEdit, projectEdi
     allTodos[id].priority = priorityEdit;
     allTodos[id].project = projectEdit;
 
-
     //sort the todos array by date in descending 
     allTodos.sort(dynamicSort("dueDate"));
 
+    //update local storage
+    localStorage.userTodos = JSON.stringify(allTodos);
 };
 
-//create sample todos
-addTodo("Do homework", "Finish science report", "2022-03-31", "Low");
-addTodo("Workout", "10 push ups", "2022-01-10", "Low");
-addTodo("Walk dog", "pick up the poop", "2022-02-26", "High");
 
 //delete todos and remove from array based on the unique ID number passed
 const delTodo = (ID) => {
     const delIndex = findTodoIndex(ID);
     allTodos.splice(delIndex, 1);
+
+    //update local storage
+    localStorage.userTodos = JSON.stringify(allTodos);
+}
+
+
+//Update which project is currently being viewed on screen
+const updateFilter = (project) => {
+    filter = project;
 }
 
 //function to sort objects by key value
@@ -86,6 +96,7 @@ function dynamicSort(property) {
             return a[property].localeCompare(b[property]);
         }        
     }
+
 }
 
 //function to find and return all unique values of project names
@@ -136,7 +147,11 @@ const displayCheckbox = (todo) => {
         else {
             todo.checked = false;
         }
-        displayTodos();
+        displayTodos(filter);
+
+        //update local storage
+        localStorage.userTodos = JSON.stringify(allTodos);
+
     });
     
 
@@ -178,8 +193,6 @@ const displayEdit = (id) => {
         e.stopPropagation()
         openModal();
         openEditForm(actualID);
-
-
     });
 
     return edit;
@@ -213,6 +226,12 @@ const displayTodos = (filter="") => {
     //clear the DOM element
      content.innerHTML = "";
 
+     if (allTodos.length < 1) {
+        content.innerText = "Nothing to do yet, add your tasks!";
+     }
+
+     content.append(filter);
+
      //loop through allTodos and create div elements to display
      for (const todo of allTodos) {
          //display if todo matches the filter
@@ -242,15 +261,9 @@ const displayTodos = (filter="") => {
             icons.appendChild(displayEdit(todo.todoID));
             icons.appendChild(displayDel(todo, todo.todoID));
 
-
-
-
-
             todoInfo.appendChild(title);
             todoInfo.appendChild(icons);
             div.appendChild(todoInfo);
-
-
 
             //add event listener, when todo is clicked, display details
             div.addEventListener('click', function (e) {
@@ -271,12 +284,34 @@ const displayTodos = (filter="") => {
                 }
             });
 
-
             content.appendChild(div);
         }
     }
 
 };
 
+//check local storage for To Do list
+if(!localStorage.getItem('userTodos')) {
+    //no local storage yet, users first time running
 
-export {displayTodos, addTodo, editTodo, delTodo, findProjects, allTodos};
+    //create sample todos
+    addTodo("Pick up groceries", "Apple pie: Pie crust, apples, cinnamon", "2022-02-26", "High", "Chores");
+    addTodo("Do homework", "Finish science project", "2022-03-31", "Low", "School");
+    addTodo("Bicep workout", "10 push ups", "2022-03-15", "Low", "Fitness");
+    addTodo("Leg day", "Do 20 squats", "2022-03-17", "Low", "Fitness");
+    addTodo("Complete math problem set", "What is linear algebra?", "2022-03-21", "Medium", "School");
+    addTodo("Hand in book report", "Complete readings of The Hobbit", "2022-04-20", "Low", "School");
+    addTodo("Run 5k", "For the walkathon", "2022-05-02", "Med", "Fitness");
+    addTodo("Walk dog", "Stoop and scoop", "2022-02-26", "High", "Chores");
+    addTodo("Mop the floor", "It's so dirty", "2022-02-18", "Medium", "Chores");
+    addTodo("Wash the car", "Is it grey or white?", "2022-04-29", "High", "Chores");
+    addTodo("Email boss vacation days", "I need a break", "2022-03-02", "Medium", "Work");
+    addTodo("Sign up for training", "Learning is fun", "2022-06-04", "Low", "Work");
+    addTodo("Mail package", "Really important package", "2022-05-15", "High", "Work");
+
+    
+} else {
+    allTodos = JSON.parse(localStorage['userTodos']);
+}
+
+export {displayTodos, addTodo, editTodo, delTodo, findProjects, updateFilter, allTodos};
