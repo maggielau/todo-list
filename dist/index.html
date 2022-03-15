@@ -31,38 +31,39 @@
     <div class="modal" id="addModal">
         <div class="modal-content">
             <h2>What to do?</h2>
+            <h6 id="closeModal">X</h6>
             <div class="form">
                 <form id="todoForm">
                     <div class="col">
-                        <input type="text" placeholder="Title*: Get groceries" maxlength="50" required>
-                        <textarea name="" rows="10" placeholder="Details*: Pick up cereal, milk, eggs etc." maxlength="350" required></textarea>
+                        <input type="text" id="titleForm" placeholder="Title: Get groceries" maxlength="50" required>
+                        <textarea name="" rows="10" placeholder="Details: Pick up cereal, milk, eggs etc." maxlength="350" required></textarea>
                     </div>
                     <div class="col">
                         <input type="date" id="" name=""
                         value=""
                         min="2020-01-01" max="2030-12-31" required>
-                        <input type="text" class="projectSelect" list="projectList" placeholder="Project Name: Chores" maxlength="14">
+                        <input type="text" class="projectSelect" list="projectList" placeholder="Project(optional): Chores" maxlength="14">
                         <datalist id="projectList">
                         </datalist>
                         <div class="radio">
-                            Priority*:
+                            Priority:
                             <label for="Low">
                                 <input type="radio" name="priority" class="Low" 
-                                id="Low" value="Low" checked>
+                                id="LowRadio" value="Low" checked>
                                 <span class="overlay"></span>
                                 <img src="./images/star-low.svg" width="15px" alt="">
                                 Low
                             </label>
                             <label for="Medium">
                                 <input type="radio" name="priority" class="Medium" 
-                                id="Medium" value="Medium">
+                                id="MediumRadio" value="Medium">
                                 <span class="overlay"></span>
                                 <img src="./images/star-med.svg" width="15px" alt="">
                                 Medium
                             </label>
                             <label for="High">
                                 <input type="radio" name="priority" class="High" 
-                                id="High" value="High">
+                                id="HighRadio" value="High">
                                 <span class="overlay"></span>
                                 <img src="./images/star-high.svg" width="15px" alt="">
                                 High
@@ -72,7 +73,7 @@
                     </div>
                 </form>
                 <div class="row">
-                    <span id="formError"></span><button type="button" id="modalButton">Submit</button>
+                    <span id="formError"></span><button type="button" id="modalButton">Submit</button><button type="button" id="editButton">Edit</button>
                 </div>
             </div>
         </div>

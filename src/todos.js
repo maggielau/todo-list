@@ -8,6 +8,7 @@ import editHoverImg from './images/edit-hover.svg';
 import delImg from './images/del.svg';
 import delHoverImg from './images/del-hover.svg';
 import { format, compareAsc } from 'date-fns';
+import { openModal, readForm, openEditForm, readEditForm } from './sidebar';
 
 
 
@@ -43,6 +44,21 @@ const addTodo = (title, desc, dueDate, priority, project) => {
 
 };
 
+//create new todos and add to array
+const editTodo = (id, titleEdit, descEdit, dueDateEdit, priorityEdit, projectEdit) => {
+
+    allTodos[id].title = titleEdit;
+    allTodos[id].desc = descEdit;
+    allTodos[id].dueDate = dueDateEdit;
+    allTodos[id].priority = priorityEdit;
+    allTodos[id].project = projectEdit;
+
+
+    //sort the todos array by date in descending 
+    allTodos.sort(dynamicSort("dueDate"));
+
+};
+
 //create sample todos
 addTodo("Do homework", "Finish science report", "2022-03-31", "Low");
 addTodo("Workout", "10 push ups", "2022-01-10", "Low");
@@ -51,7 +67,6 @@ addTodo("Walk dog", "pick up the poop", "2022-02-26", "High");
 //delete todos and remove from array based on the unique ID number passed
 const delTodo = (ID) => {
     const delIndex = findTodoIndex(ID);
-    console.log(`Deleted index ${delIndex}`);
     allTodos.splice(delIndex, 1);
 }
 
@@ -147,7 +162,7 @@ const displayPriority = (todo) => {
 
 
 //Display edit icon
-const displayEdit = (todo) => {
+const displayEdit = (id) => {
     const edit = new Image();
     edit.setAttribute("width", "18px");
     edit.src = editImg;
@@ -159,8 +174,12 @@ const displayEdit = (todo) => {
 
     //add event listener to allow user to edit todo
     edit.addEventListener('click', function (e) {
+        let actualID = findTodoIndex(id);
         e.stopPropagation()
-        console.log("Editing this todo");
+        openModal();
+        openEditForm(actualID);
+
+
     });
 
     return edit;
@@ -190,70 +209,74 @@ const displayDel = (todo, id) => {
 
 
 //show all todos in DOM
-const displayTodos = () => {
+const displayTodos = (filter="") => {
     //clear the DOM element
      content.innerHTML = "";
 
      //loop through allTodos and create div elements to display
      for (const todo of allTodos) {
-         const div = document.createElement('div');
-         div.setAttribute("class", "todo");
-         div.setAttribute("id", todo.todoID);
+         //display if todo matches the filter
+         if (todo.project === filter || filter === "") {
+            const div = document.createElement('div');
+            div.setAttribute("class", "todo");
+            div.setAttribute("id", todo.todoID);
 
-        //todo main info display
-        const todoInfo = document.createElement('div');
-        todoInfo.setAttribute("class", "todoInfo");
-        const title = document.createElement('div');
-        title.setAttribute("class", "todoTitle");
-        title.setAttribute("id", todo.checked);
+            //todo main info display
+            const todoInfo = document.createElement('div');
+            todoInfo.setAttribute("class", "todoInfo");
+            const title = document.createElement('div');
+            title.setAttribute("class", "todoTitle");
+            title.setAttribute("id", todo.checked);
 
-        //Display checkbox
-        title.appendChild(displayCheckbox(todo));        
+            //Display checkbox
+            title.appendChild(displayCheckbox(todo));        
 
-        title.append(todo.title);
+            title.append(todo.title);
 
-        //Display date and icons
-        const icons = document.createElement('div')
-        icons.setAttribute("class", "todoIcons");
-        icons.append(format(new Date(todo.year, todo.month, todo.day), 'MMM-dd'));
-        icons.appendChild(displayPriority(todo));
-        icons.appendChild(displayEdit(todo));
-        icons.appendChild(displayDel(todo, todo.todoID));
-
-
-
-
-
-        todoInfo.appendChild(title);
-        todoInfo.appendChild(icons);
-        div.appendChild(todoInfo);
+            //Display date and icons
+            const icons = document.createElement('div')
+            icons.setAttribute("class", "todoIcons");
+            icons.id = todo.todoID;
+            icons.append(format(new Date(todo.year, todo.month, todo.day), 'MMM-dd'));
+            icons.appendChild(displayPriority(todo));
+            icons.appendChild(displayEdit(todo.todoID));
+            icons.appendChild(displayDel(todo, todo.todoID));
 
 
 
-         //add event listener, when todo is clicked, display details
-         div.addEventListener('click', function (e) {
-            let index = findTodoIndex(parseInt(this.id));
-            //todo has been expanded already, close it by deleting
-            if (div.childNodes.length>1) {
-                div.removeChild(div.lastChild);
-            }
-            //todo is closed, expand with details
-            else {
-                const p = document.createElement('p');
-                p.innerHTML = `<b>Details:</b> ${allTodos[index].desc}
-                            <br><br><b>Due Date:</b> ${allTodos[index].dueDate}
-                            <br><b>Priority:</b> ${allTodos[index].priority}
-                            <br><b>Project:</b> ${allTodos[index].project}`;
-
-                div.appendChild(p);
-            }
-         });
 
 
-         content.appendChild(div);
+            todoInfo.appendChild(title);
+            todoInfo.appendChild(icons);
+            div.appendChild(todoInfo);
+
+
+
+            //add event listener, when todo is clicked, display details
+            div.addEventListener('click', function (e) {
+                let index = findTodoIndex(parseInt(this.id));
+                //todo has been expanded already, close it by deleting
+                if (div.childNodes.length>1) {
+                    div.removeChild(div.lastChild);
+                }
+                //todo is closed, expand with details
+                else {
+                    const p = document.createElement('p');
+                    p.innerHTML = `<b>Details:</b> ${allTodos[index].desc}
+                                <br><br><b>Due Date:</b> ${allTodos[index].dueDate}
+                                <br><b>Priority:</b> ${allTodos[index].priority}
+                                <br><b>Project:</b> ${allTodos[index].project}`;
+
+                    div.appendChild(p);
+                }
+            });
+
+
+            content.appendChild(div);
+        }
     }
 
 };
 
 
-export {displayTodos, addTodo, delTodo, findProjects, allTodos};
+export {displayTodos, addTodo, editTodo, delTodo, findProjects, allTodos};

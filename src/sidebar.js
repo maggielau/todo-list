@@ -1,6 +1,22 @@
 import addImg from './images/plus.svg';
-import {findProjects, addTodo, displayTodos} from './todos.js';
+import {findProjects, addTodo, editTodo, displayTodos, allTodos} from './todos.js';
 
+//Modal
+const modal = document.getElementById("addModal");
+const modalbutton = document.getElementById('modalButton');
+const editbutton = document.getElementById('editButton');
+let currentlyEditingID;
+modalbutton.addEventListener('click', function () {
+    readForm();
+});
+editbutton.addEventListener('click', function () {
+    readEditForm();
+});
+
+
+//Form
+const form = document.getElementById('todoForm');
+const formError = document.getElementById('formError');
 
 
 //Display sidebar elements
@@ -16,6 +32,10 @@ const displaySidebar = () => {
     homeLink.innerText = "Home";
     sidebar.appendChild(homeLink);
 
+    homeLink.addEventListener('click', function () {
+        displayTodos();
+    });
+
     //Display links to Home view and different projects
     const projectLinks = document.createElement('div');
     projectLinks.className = "projectLinks";
@@ -23,13 +43,17 @@ const displaySidebar = () => {
     for (const project of allProjects) {
         const projectLink = document.createElement('div');
         projectLink.className = "projectLink";
+        projectLink.id = project;
         projectLink.innerText = project;
         projectLinks.appendChild(projectLink);
+
+        projectLink.addEventListener('click', function () {
+            displayTodos(project);
+        });
     }
     sidebar.appendChild(projectLinks);
 
-    //Modal
-    const modal = document.getElementById("addModal");
+
     const addButton = document.createElement('button');
     addButton.className = "addButton";
     const addPic = new Image();
@@ -40,19 +64,28 @@ const displaySidebar = () => {
 
     //Open modal on click and update project list
     addButton.onclick = function() {
-        modal.classList.add("is-visible");
+        openModal();
         updateProjectList();
 
     }
 
-    //close modal when clicked outside
-    window.onclick = function(event) {
-        if (event.target == modal) {
+    //close modal when clicked X
+    const closeButton = document.getElementById("closeModal")
+    closeButton.onclick = function(event) {
             modal.classList.remove("is-visible");
-
-        }
+            form.reset();
+            editbutton.classList.remove("is-visible");
+            modalbutton.classList.add("is-visible");
     }
 
+    modalbutton.classList.add("is-visible");
+
+
+
+}
+
+const openModal = () => {
+    modal.classList.add("is-visible");
 
 }
 
@@ -71,8 +104,7 @@ const updateProjectList = () => {
 //read form to create new todo
 const readForm = () => {
 
-    let form = document.getElementById('todoForm');
-    let formError = document.getElementById('formError');
+
 
     let title = form.elements[0].value;
     let desc = form.elements[1].value;
@@ -85,18 +117,78 @@ const readForm = () => {
         formError.innerText="Please fill all required fields!";
         return;
     }
-    console.log(title, desc, date, project, priority);
-    console.log(project);
 
     addTodo(title, desc, date, priority, project);
-    displayTodos();
+    displayTodos(project);
     displaySidebar();
     form.reset();
     formError.innerHTML = "";
 
 }
 
-export {displaySidebar, readForm};
+//pre-fill form for editing todos
+const openEditForm = (id) => {
+
+
+    let LowRadio = document.getElementById('LowRadio'); 
+    let MediumRadio = document.getElementById('MediumRadio'); 
+    let HighRadio = document.getElementById('HighRadio'); 
+
+
+    //pre-fill form with existing todo values
+    form.elements[0].value = allTodos[id].title;
+    form.elements[1].value = allTodos[id].desc;
+    form.elements[2].value = allTodos[id].dueDate;
+    form.elements[3].value = allTodos[id].project;
+
+    if (allTodos[id].priority === "Medium") {
+        LowRadio.checked = false;
+        MediumRadio.checked = true;
+    }
+    else if (allTodos[id].priority === "High") {
+        LowRadio.checked = false;
+        HighRadio.checked = true;
+    }
+    else {
+        LowRadio.checked = true;
+    }
+
+    editbutton.classList.add("is-visible");
+    modalbutton.classList.remove("is-visible");
+
+    currentlyEditingID = id;
+
+}
+
+//read form to create new todo
+const readEditForm = () => {
+
+    let titleInput = form.elements[0].value;
+    let descInput = form.elements[1].value;
+    let dateInput = form.elements[2].value;
+    let projectInput = form.elements[3].value;
+    let priorityInput = document.querySelector('input[name="priority"]:checked').value;
+
+    //Error if not all required fields are submitted
+    if (titleInput == "" || descInput == "" || dateInput == "" || priorityInput == "") {
+        formError.innerText="Please fill all required fields!";
+        return;
+    }
+
+    editTodo(currentlyEditingID, titleInput, descInput, dateInput, priorityInput, projectInput);
+    displayTodos();
+    displaySidebar();
+    form.reset();
+    formError.innerHTML = "";
+
+    //return modal buttons back to default function
+    modalbutton.classList.add("is-visible");
+    editbutton.classList.remove("is-visible");
+
+
+}
+
+export {displaySidebar, readForm, openEditForm, readEditForm, openModal};
 
 
 

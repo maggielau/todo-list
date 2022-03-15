@@ -21,12 +21,6 @@ addTodo("Walk dog", "pick up the poop", "2022-04-28", "High");
 addTodo("Walk dog", "pick up the poop", "2022-04-28", "High");
 addTodo("Walk dog", "pick up the poop", "2022-04-28", "High");
 
-let modalbutton = document.getElementById('modalButton');
-
-modalbutton.addEventListener('click', function () {
-    readForm();
-});
-
 displaySidebar();
 displayTodos();
 
