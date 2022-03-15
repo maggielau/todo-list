@@ -168,6 +168,17 @@ h1 {
     opacity: 1;
 }
 
+#modalButton,
+#editButton {
+    visibility: hidden;
+}
+
+#modalButton.is-visible,
+#editButton.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
 .modal-content {
     background: linear-gradient( #FF6DA3, #FF6DA3 60px, #22232A 20px, #22232A 40px);
     margin: 10% auto;
@@ -289,7 +300,17 @@ input[type='radio']:checked:after {
     color: #0f0d14;
 }
 
-.modal-content #modalButton {
+.modal-content h6 {
+    position: absolute;
+    right: 15px;
+    top: -50px;
+    font-size: 30px;
+    color: #0f0d14;
+    cursor: pointer;
+}
+
+.modal-content #modalButton,
+.modal-content #editButton {
     background-color: #FF6DA3;
     padding: 5px 10px;
     font-size: 22px;
@@ -361,7 +382,9 @@ input[type='radio']:checked:after {
 .addButton:hover, 
 .addButton:focus,
 #modalButton:hover,
-#modalButton:focus {
+#modalButton:focus,
+#editButton:hover,
+#editButton:focus {
     -webkit-animation: swing 1s ease;
     animation: swing 1s ease;
     -webkit-animation-iteration-count: 1;
