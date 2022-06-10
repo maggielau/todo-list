@@ -12,6 +12,7 @@ import { openModal, readForm, openEditForm, readEditForm } from './sidebar';
 
 
 
+
 //DOM element for main display window "content"
 const content = document.getElementById('content');
 //ID number for each new todo created
@@ -306,12 +307,13 @@ if(!localStorage.getItem('userTodos')) {
     addTodo("Mop the floor", "It's so dirty", "2022-02-18", "Medium", "Chores");
     addTodo("Wash the car", "Is it grey or white?", "2022-04-29", "High", "Chores");
     addTodo("Email boss vacation days", "I need a break", "2022-03-02", "Medium", "Work");
-    addTodo("Sign up for training", "Learning is fun", "2022-06-04", "Low", "Work");
+    addTodo("Sign up for training", "Learning is fun", "2022-06-24", "Low", "Work");
     addTodo("Mail package", "Really important package", "2022-05-15", "High", "Work");
 
     
 } else {
     allTodos = JSON.parse(localStorage['userTodos']);
+    uniqueID = allTodos.length+1;
 }
 
 export {displayTodos, addTodo, editTodo, delTodo, findProjects, updateFilter, allTodos};

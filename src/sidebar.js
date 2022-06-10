@@ -25,6 +25,16 @@ const displaySidebar = () => {
     const sidebar = document.getElementById('sidebar');
     sidebar.innerHTML="";
 
+    //Close button for mobile mode
+    const sidebarClose = document.createElement('div');
+    sidebarClose.className = "sidebar-close";
+    sidebarClose.id = "sidebar-close";
+    sidebarClose.innerText = "\u00D7";
+    sidebar.appendChild(sidebarClose);
+    sidebarClose.addEventListener('click', function () {
+        document.getElementById("sidebar").style.display = "none";
+    });
+
     //Display link for default home view
     const homeLink = document.createElement('div');
     homeLink.className = "projectLink";
@@ -34,6 +44,7 @@ const displaySidebar = () => {
 
     homeLink.addEventListener('click', function () {
         displayTodos();
+        updateFilter("");
     });
 
     //Display links to Home view and different projects
@@ -177,7 +188,7 @@ const readEditForm = () => {
     }
 
     editTodo(currentlyEditingID, titleInput, descInput, dateInput, priorityInput, projectInput);
-    displayTodos();
+    displayTodos(projectInput);
     displaySidebar();
     form.reset();
     formError.innerHTML = "";
@@ -186,6 +197,8 @@ const readEditForm = () => {
     modalbutton.classList.add("is-visible");
     editbutton.classList.remove("is-visible");
 
+    //close after submitted
+    modal.classList.remove("is-visible");
 
 }
 
